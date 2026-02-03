@@ -1,0 +1,184 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Mes avis - IMMOB{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold text-gray-900 mb-8">Mes avis</h1>
+
+    <div id="reviews-container" class="space-y-6">
+        <div class="text-center py-12">
+            <i class="fas fa-spinner fa-spin text-4xl text-blue-600 mb-4"></i>
+            <p class="text-gray-600">Chargement de vos avis...</p>
+        </div>
+
+    <div id="empty-reviews" class="hidden text-center py-12">
+        <i class="fas fa-star text-6xl text-gray-300 mb-4"></i>
+        <h2 class="text-2xl font-bold text-gray-600 mb-2">Aucun avis</h2>
+        <p class="text-gray-500 mb-6">Vous n'avez pas encore publié d'avis.</p>
+        <a href="{% url 'properties' %}" class="btn-primary inline-block">
+            <i class="fas fa-search mr-2"></i>Explorer les propriétés
+        </a>
+    </div>
+
+<!-- Template pour les cartes d'avis -->
+<script type="text/template" id="review-card-template">
+    <div class="bg-white p-6 rounded-lg shadow-md">
+        <div class="flex justify-between items-start mb-4">
+            <div class="flex items-center">
+                <img src="{property_image}" alt="{property_title}" class="w-16 h-16 rounded-lg object-cover mr-4">
+                <div>
+                    <h3 class="font-bold text-gray-900">{property_title}</h3>
+                    <div class="flex text-yellow-400 text-sm">
+                        {rating_stars}
+                    </div>
+            </div>
+            <div class="text-right">
+                <span class="text-gray-500 text-sm">{date}</span>
+                {is_verified}
+            </div>
+        <h4 class="font-bold text-gray-900 mb-2">{title}</h4>
+        <p class="text-gray-700 mb-4">{comment}</p>
+        <div class="flex items-center justify-between">
+            <div class="flex items-center text-sm text-gray-500">
+                <i class="fas fa-thumbs-up mr-1"></i>
+                {likes_count} j'aime
+            </div>
+            <div class="flex space-x-2">
+                <button class="edit-review text-blue-600 hover:text-blue-800" data-review-id="{id}">
+                    <i class="fas fa-edit"></i> Modifier
+                </button>
+                <button class="delete-review text-red-600 hover:text-red-800" data-review-id="{id}">
+                    <i class="fas fa-trash"></i> Supprimer
+                </button>
+            </div>
+        {is_edited}
+    </div>
+</script>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const reviewsContainer = document.getElementById('reviews-container');
+    const emptyReviews = document.getElementById('empty-reviews');
+    const template = document.getElementById('review-card-template').innerHTML;
+
+    // Charger les avis
+    loadReviews();
+
+    // Gestionnaire pour les actions sur les avis
+    reviewsContainer.addEventListener('click', async function(e) {
+        if (e.target.closest('.delete-review')) {
+            const btn = e.target.closest('.delete-review');
+            const reviewId = btn.dataset.reviewId;
+            if (confirm('Êtes-vous sûr de vouloir supprimer cet avis ?')) {
+                await deleteReview(reviewId);
+                loadReviews();
+            }
+        }
+    });
+
+    // Fonction pour charger les avis
+    async function loadReviews() {
+        try {
+            const response = await fetch('/api/reviews/my_reviews/', {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+                }
+            });
+
+            if (response.ok) {
+                const reviews = await response.json();
+                displayReviews(reviews);
+            }
+        } catch (error) {
+            console.error('Erreur lors du chargement des avis:', error);
+            reviewsContainer.innerHTML = `
+                <div class="text-center py-12">
+                    <p class="text-red-600">Erreur lors du chargement des avis</p>
+                </div>
+            `;
+        }
+    }
+
+    // Fonction pour afficher les avis
+    function displayReviews(reviews) {
+        if (reviews.length === 0) {
+            reviewsContainer.classList.add('hidden');
+            emptyReviews.classList.remove('hidden');
+            return;
+        }
+
+        reviewsContainer.classList.remove('hidden');
+        emptyReviews.classList.add('hidden');
+
+        reviewsContainer.innerHTML = reviews.map(review => {
+            const imageUrl = review.property.images && review.property.images.length > 0
+                ? review.property.images[0].image
+                : 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=200';
+
+            const ratingStars = '<i class="fas fa-star"></i>'.repeat(review.rating) +
+                               '<i class="far fa-star"></i>'.repeat(5 - review.rating);
+
+            const isVerified = review.is_verified_purchase
+                ? '<span class="inline-block bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full"><i class="fas fa-check-circle mr-1"></i>Achat vérifié</span>'
+                : '';
+
+            const isEdited = review.is_edited
+                ? '<p class="text-gray-500 text-xs mt-2"><i class="fas fa-edit mr-1"></i>Modifié</p>'
+                : '';
+
+            const date = new Date(review.created_at).toLocaleDateString('fr-FR', {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric'
+            });
+
+            return template
+                .replace('{id}', review.id)
+                .replace('{property_image}', imageUrl)
+                .replace('{property_title}', review.property.title)
+                .replace('{rating_stars}', ratingStars)
+                .replace('{date}', date)
+                .replace('{is_verified}', isVerified)
+                .replace('{title}', review.title)
+                .replace('{comment}', review.comment)
+                .replace('{likes_count}', review.likes_count)
+                .replace('{is_edited}', isEdited);
+        }).join('');
+    }
+
+    // Fonction pour supprimer un avis
+    async function deleteReview(reviewId) {
+        try {
+            const response = await fetch(`/api/reviews/${reviewId}/`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+                }
+            });
+
+            if (response.ok) {
+                showToast('Avis supprimé avec succès', 'success');
+            }
+        } catch (error) {
+            console.error('Erreur lors de la suppression de l\'avis:', error);
+        }
+    }
+
+    function showToast(message, type = 'success') {
+        const toast = document.createElement('div');
+        toast.className = `toast ${type === 'success' ? 'bg-green-500' : 'bg-red-500'}`;
+        toast.textContent = message;
+        toast.style.cssText = 'position: fixed; bottom: 20px; right: 20px; z-index: 1001; padding: 15px 25px; border-radius: 8px; color: white;';
+        document.body.appendChild(toast);
+
+        setTimeout(() => {
+            toast.remove();
+        }, 3000);
+    }
+});
+</script>
+{% endblock %}

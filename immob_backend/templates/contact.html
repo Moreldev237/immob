@@ -1,0 +1,248 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Contact - IMMOB{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold text-gray-900 mb-8">Contactez-nous</h1>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+        <!-- Formulaire de contact -->
+        <div class="bg-white p-8 rounded-lg shadow-md">
+            <h2 class="text-2xl font-bold mb-6">Envoyez-nous un message</h2>
+
+            <!-- Toast Notification -->
+            <div id="toast" class="toast fixed top-4 right-4 z-50"></div>
+
+            <form id="contact-form">
+                <div class="mb-6">
+                    <label class="block text-gray-700 mb-2">Type de message</label>
+                    <select id="feedback-type" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                        <option value="general">Question générale</option>
+                        <option value="suggestion">Suggestion</option>
+                        <option value="complaint">Plainte</option>
+                        <option value="praise">Éloge</option>
+                        <option value="bug">Rapport de bug</option>
+                    </select>
+                </div>
+
+                <div class="mb-6">
+                    <label class="block text-gray-700 mb-2">Sujet</label>
+                    <input type="text" id="contact-subject" required
+                           class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                           placeholder="Sujet de votre message">
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                    <div>
+                        <label class="block text-gray-700 mb-2">Nom</label>
+                        <input type="text" id="contact-name" required
+                               class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                               placeholder="Votre nom">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 mb-2">Email</label>
+                        <input type="email" id="contact-email" required
+                               class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                               placeholder="votre@email.com">
+                    </div>
+
+                <div class="mb-6">
+                    <label class="block text-gray-700 mb-2">Téléphone (optionnel)</label>
+                    <input type="tel" id="contact-phone"
+                           class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                           placeholder="+237XXXXXXXXX">
+                </div>
+
+                <div class="mb-6">
+                    <label class="block text-gray-700 mb-2">Notez notre service (optionnel)</label>
+                    <div class="flex space-x-2" id="rating-stars">
+                        <i class="far fa-star text-2xl text-yellow-400 rating-star cursor-pointer hover:text-yellow-500" data-value="1"></i>
+                        <i class="far fa-star text-2xl text-yellow-400 rating-star cursor-pointer hover:text-yellow-500" data-value="2"></i>
+                        <i class="far fa-star text-2xl text-yellow-400 rating-star cursor-pointer hover:text-yellow-500" data-value="3"></i>
+                        <i class="far fa-star text-2xl text-yellow-400 rating-star cursor-pointer hover:text-yellow-500" data-value="4"></i>
+                        <i class="far fa-star text-2xl text-yellow-400 rating-star cursor-pointer hover:text-yellow-500" data-value="5"></i>
+                    </div>
+                    <input type="hidden" id="contact-rating" value="0">
+                </div>
+
+                <div class="mb-6">
+                    <label class="block text-gray-700 mb-2">Message</label>
+                    <textarea id="contact-message" rows="5" required
+                              class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                              placeholder="Votre message..."></textarea>
+                </div>
+
+                <button type="submit" id="contact-submit-btn" class="btn-primary w-full py-3">
+                    <i class="fas fa-paper-plane mr-2"></i>Envoyer le message
+                </button>
+            </form>
+        </div>
+
+        <!-- Informations de contact -->
+        <div>
+            <div class="bg-white p-8 rounded-lg shadow-md mb-6">
+                <h2 class="text-2xl font-bold mb-6">Nos coordonnées</h2>
+
+                <div class="space-y-6">
+                    <div class="flex items-start">
+                        <div class="bg-blue-100 p-3 rounded-full mr-4">
+                            <i class="fas fa-map-marker-alt text-blue-600 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-lg mb-1">Adresse</h3>
+                            <p class="text-gray-600">Rue 1.234, Quartier Bastos<br>Yaoundé, Cameroun</p>
+                        </div>
+
+                    <div class="flex items-start">
+                        <div class="bg-green-100 p-3 rounded-full mr-4">
+                            <i class="fas fa-phone text-green-600 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-lg mb-1">Téléphone</h3>
+                            <p class="text-gray-600">+237 6XX XXX XXX<br>Lundi - Samedi: 8h - 18h</p>
+                        </div>
+
+                    <div class="flex items-start">
+                        <div class="bg-purple-100 p-3 rounded-full mr-4">
+                            <i class="fas fa-envelope text-purple-600 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-lg mb-1">Email</h3>
+                            <p class="text-gray-600">contact@immob.cm<br>support@immob.cm</p>
+                        </div>
+                </div>
+
+            <div class="bg-white p-8 rounded-lg shadow-md">
+                <h2 class="text-2xl font-bold mb-6">Suivez-nous</h2>
+                <div class="flex space-x-4">
+                    <a href="#" class="bg-blue-600 text-white p-3 rounded-full hover:bg-blue-700 transition">
+                        <i class="fab fa-facebook-f text-xl"></i>
+                    </a>
+                    <a href="#" class="bg-blue-400 text-white p-3 rounded-full hover:bg-blue-500 transition">
+                        <i class="fab fa-twitter text-xl"></i>
+                    </a>
+                    <a href="#" class="bg-pink-600 text-white p-3 rounded-full hover:bg-pink-700 transition">
+                        <i class="fab fa-instagram text-xl"></i>
+                    </a>
+                    <a href="#" class="bg-blue-700 text-white p-3 rounded-full hover:bg-blue-800 transition">
+                        <i class="fab fa-linkedin-in text-xl"></i>
+                    </a>
+                    <a href="#" class="bg-red-600 text-white p-3 rounded-full hover:bg-red-700 transition">
+                        <i class="fab fa-youtube text-xl"></i>
+                    </a>
+                </div>
+
+            <!-- Carte Google Maps -->
+            <div class="mt-6 bg-gray-200 rounded-lg overflow-hidden h-64">
+                <div class="w-full h-full flex items-center justify-center bg-gray-300">
+                    <p class="text-gray-600">Carte Google Maps</p>
+                </div>
+        </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const contactForm = document.getElementById('contact-form');
+    const submitBtn = document.getElementById('contact-submit-btn');
+    const ratingStars = document.getElementById('rating-stars');
+    const ratingInput = document.getElementById('contact-rating');
+
+    // Gestion des étoiles de notation
+    ratingStars.querySelectorAll('.rating-star').forEach(star => {
+        star.addEventListener('click', function() {
+            const value = parseInt(this.dataset.value);
+            ratingInput.value = value;
+
+            ratingStars.querySelectorAll('.rating-star').forEach((s, index) => {
+                if (index < value) {
+                    s.classList.remove('far');
+                    s.classList.add('fas');
+                } else {
+                    s.classList.remove('fas');
+                    s.classList.add('far');
+                }
+            });
+        });
+
+        star.addEventListener('mouseenter', function() {
+            const value = parseInt(this.dataset.value);
+            ratingStars.querySelectorAll('.rating-star').forEach((s, index) => {
+                if (index < value) {
+                    s.classList.add('fas');
+                }
+            });
+        });
+
+        star.addEventListener('mouseleave', function() {
+            const currentValue = parseInt(ratingInput.value);
+            ratingStars.querySelectorAll('.rating-star').forEach((s, index) => {
+                if (index >= currentValue) {
+                    s.classList.remove('fas');
+                    s.classList.add('far');
+                }
+            });
+        });
+    });
+
+    // Soumission du formulaire
+    contactForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        const formData = {
+            feedback_type: document.getElementById('feedback-type').value,
+            title: document.getElementById('contact-subject').value,
+            message: document.getElementById('contact-message').value,
+            name: document.getElementById('contact-name').value,
+            email: document.getElementById('contact-email').value,
+            phone: document.getElementById('contact-phone').value,
+            rating: parseInt(ratingInput.value) || null
+        };
+
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Envoi en cours...';
+
+        try {
+            const response = await fetch('/api/feedback/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            });
+
+            if (response.ok) {
+                showToast('Message envoyé avec succès !', 'success');
+                contactForm.reset();
+                ratingInput.value = 0;
+                ratingStars.querySelectorAll('.rating-star').forEach(s => {
+                    s.classList.remove('fas');
+                    s.classList.add('far');
+                });
+            } else {
+                showToast('Erreur lors de l\'envoi du message', 'error');
+            }
+        } catch (error) {
+            showToast('Erreur de réseau', 'error');
+        } finally {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<i class="fas fa-paper-plane mr-2"></i>Envoyer le message';
+        }
+    });
+
+    function showToast(message, type = 'success') {
+        const toast = document.getElementById('toast');
+        toast.textContent = message;
+        toast.className = `toast ${type === 'success' ? 'bg-green-500' : 'bg-red-500'}`;
+        toast.style.display = 'block';
+
+        setTimeout(() => {
+            toast.style.display = 'none';
+        }, 3000);
+    }
+});
+</script>
+{% endblock %}

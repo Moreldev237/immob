@@ -1,0 +1,324 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Mon profil - IMMOB{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold text-gray-900 mb-8">Mon profil</h1>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- Informations personnelles -->
+        <div class="lg:col-span-2">
+            <div class="bg-white p-6 rounded-lg shadow-md mb-6">
+                <h2 class="text-xl font-bold mb-4">Informations personnelles</h2>
+
+                <!-- Toast Notification -->
+                <div id="toast" class="toast fixed top-4 right-4 z-50"></div>
+
+                <form id="profile-form">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                        <div>
+                            <label class="block text-gray-700 mb-2">Prénom</label>
+                            <input type="text" id="first_name" name="first_name"
+                                   class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 mb-2">Nom</label>
+                            <input type="text" id="last_name" name="last_name"
+                                   class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                        </div>
+
+                    <div class="mb-6">
+                        <label class="block text-gray-700 mb-2">Email</label>
+                        <input type="email" id="email" name="email" readonly
+                               class="w-full p-3 border border-gray-300 rounded-lg bg-gray-100">
+                    </div>
+
+                    <div class="mb-6">
+                        <label class="block text-gray-700 mb-2">Téléphone</label>
+                        <input type="tel" id="phone_number" name="phone_number"
+                               class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                               placeholder="+237XXXXXXXXX">
+                    </div>
+
+                    <div class="mb-6">
+                        <label class="block text-gray-700 mb-2">Bio</label>
+                        <textarea id="bio" name="bio" rows="4"
+                                  class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                                  placeholder="Parlez-nous de vous..."></textarea>
+                    </div>
+
+                    <button type="submit" id="save-profile-btn" class="btn-primary">
+                        <i class="fas fa-save mr-2"></i>Enregistrer les modifications
+                    </button>
+                </form>
+            </div>
+
+            <!-- Statistiques -->
+            <div class="bg-white p-6 rounded-lg shadow-md mb-6">
+                <h2 class="text-xl font-bold mb-4">Mes statistiques</h2>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="text-center p-4 bg-blue-50 rounded-lg">
+                        <div id="favorites-count" class="text-3xl font-bold text-blue-600">0</div>
+                        <div class="text-gray-600">Favoris</div>
+                    <div class="text-center p-4 bg-green-50 rounded-lg">
+                        <div id="properties-viewed" class="text-3xl font-bold text-green-600">0</div>
+                        <div class="text-gray-600">Propriétés vues</div>
+                    <div class="text-center p-4 bg-yellow-50 rounded-lg">
+                        <div id="reviews-count" class="text-3xl font-bold text-yellow-600">0</div>
+                        <div class="text-gray-600">Avis</div>
+                    <div class="text-center p-4 bg-purple-50 rounded-lg">
+                        <div id="searches-count" class="text-3xl font-bold text-purple-600">0</div>
+                        <div class="text-gray-600">Recherches</div>
+                </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="lg:col-span-1">
+            <!-- Photo de profil -->
+            <div class="bg-white p-6 rounded-lg shadow-md mb-6">
+                <h2 class="text-xl font-bold mb-4">Photo de profil</h2>
+                <div class="text-center mb-4">
+                    <img id="profile-picture" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150" 
+                         alt="Photo de profil" class="w-32 h-32 rounded-full mx-auto object-cover">
+                </div>
+                <input type="file" id="profile-picture-input" accept="image/*" class="hidden">
+                <button id="upload-picture-btn" class="w-full bg-gray-600 text-white py-2 px-4 rounded-lg hover:bg-gray-700">
+                    <i class="fas fa-upload mr-2"></i>Changer la photo
+                </button>
+            </div>
+
+            <!-- Agent immobilier -->
+            <div class="bg-white p-6 rounded-lg shadow-md mb-6">
+                <h2 class="text-xl font-bold mb-4">Agent immobilier</h2>
+                <div class="mb-4">
+                    <label class="flex items-center">
+                        <input type="checkbox" id="is_agent" class="mr-2">
+                        <span class="font-medium">Je suis un agent immobilier</span>
+                    </label>
+                </div>
+                <div id="agent-fields" class="hidden space-y-4">
+                    <div>
+                        <label class="block text-gray-700 mb-2">Nom de l'agence</label>
+                        <input type="text" id="agency_name" 
+                               class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 mb-2">Numéro de licence</label>
+                        <input type="text" id="license_number" 
+                               class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                    </div>
+            </div>
+
+            <!-- Préférences -->
+            <div class="bg-white p-6 rounded-lg shadow-md mb-6">
+                <h2 class="text-xl font-bold mb-4">Préférences</h2>
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-gray-700 mb-2">Langue préférée</label>
+                        <select id="preferred_language" class="w-full p-3 border border-gray-300 rounded-lg">
+                            <option value="fr">Français</option>
+                            <option value="en">English</option>
+                        </select>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="font-medium">Notifications par email</span>
+                        <input type="checkbox" id="notification_email" class="w-5 h-5" checked>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="font-medium">Notifications par SMS</span>
+                        <input type="checkbox" id="notification_sms" class="w-5 h-5">
+                    </div>
+            </div>
+
+            <!-- Réseaux sociaux -->
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h2 class="text-xl font-bold mb-4">Réseaux sociaux</h2>
+                <div class="space-y-4">
+                    <div class="flex items-center">
+                        <i class="fab fa-facebook text-blue-600 w-8"></i>
+                        <input type="url" id="facebook" placeholder="Facebook"
+                               class="flex-1 p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                    </div>
+                    <div class="flex items-center">
+                        <i class="fab fa-twitter text-blue-400 w-8"></i>
+                        <input type="url" id="twitter" placeholder="Twitter"
+                               class="flex-1 p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                    </div>
+                    <div class="flex items-center">
+                        <i class="fab fa-instagram text-pink-600 w-8"></i>
+                        <input type="url" id="instagram" placeholder="Instagram"
+                               class="flex-1 p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                    </div>
+                    <div class="flex items-center">
+                        <i class="fab fa-linkedin text-blue-700 w-8"></i>
+                        <input type="url" id="linkedin" placeholder="LinkedIn"
+                               class="flex-1 p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                    </div>
+            </div>
+    </div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Charger les informations du profil
+    loadProfile();
+
+    // Gestionnaire du formulaire de profil
+    const profileForm = document.getElementById('profile-form');
+    profileForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        const formData = {
+            first_name: document.getElementById('first_name').value,
+            last_name: document.getElementById('last_name').value,
+            phone_number: document.getElementById('phone_number').value,
+        };
+
+        try {
+            const response = await fetch('/api/users/profile/', {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+                },
+                body: JSON.stringify(formData),
+            });
+
+            if (response.ok) {
+                showToast('Profil mis à jour avec succès !', 'success');
+            } else {
+                showToast('Erreur lors de la mise à jour du profil', 'error');
+            }
+        } catch (error) {
+            showToast('Erreur de réseau', 'error');
+        }
+    });
+
+    // Gestionnaire checkbox agent
+    document.getElementById('is_agent').addEventListener('change', function() {
+        const agentFields = document.getElementById('agent-fields');
+        if (this.checked) {
+            agentFields.classList.remove('hidden');
+        } else {
+            agentFields.classList.add('hidden');
+        }
+    });
+
+    // Gestionnaire d'upload de photo
+    document.getElementById('upload-picture-btn').addEventListener('click', function() {
+        document.getElementById('profile-picture-input').click();
+    });
+
+    document.getElementById('profile-picture-input').addEventListener('change', async function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const formData = new FormData();
+            formData.append('profile_picture', file);
+
+            try {
+                const response = await fetch('/api/users/profile/', {
+                    method: 'PATCH',
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+                    },
+                    body: formData,
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    document.getElementById('profile-picture').src = data.profile_picture;
+                    showToast('Photo de profil mise à jour !', 'success');
+                } else {
+                    showToast('Erreur lors de l\'upload', 'error');
+                }
+            } catch (error) {
+                showToast('Erreur de réseau', 'error');
+            }
+        }
+    });
+
+    // Fonction pour charger le profil
+    async function loadProfile() {
+        try {
+            const response = await fetch('/api/users/profile/', {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+                }
+            });
+
+            if (response.ok) {
+                const profile = await response.json();
+                displayProfile(profile);
+            }
+        } catch (error) {
+            console.error('Erreur lors du chargement du profil:', error);
+        }
+    }
+
+    // Fonction pour afficher le profil
+    function displayProfile(profile) {
+        document.getElementById('first_name').value = profile.first_name || '';
+        document.getElementById('last_name').value = profile.last_name || '';
+        document.getElementById('email').value = profile.email || '';
+        document.getElementById('phone_number').value = profile.phone_number || '';
+        document.getElementById('is_agent').checked = profile.is_agent || false;
+        document.getElementById('agency_name').value = profile.agency_name || '';
+        document.getElementById('license_number').value = profile.license_number || '';
+
+        if (profile.is_agent) {
+            document.getElementById('agent-fields').classList.remove('hidden');
+        }
+
+        if (profile.profile_picture) {
+            document.getElementById('profile-picture').src = profile.profile_picture;
+        }
+
+        if (profile.profile) {
+            document.getElementById('bio').value = profile.profile.bio || '';
+            document.getElementById('preferred_language').value = profile.profile.preferred_language || 'fr';
+            document.getElementById('notification_email').checked = profile.profile.notification_email || false;
+            document.getElementById('notification_sms').checked = profile.profile.notification_sms || false;
+            document.getElementById('facebook').value = profile.profile.facebook || '';
+            document.getElementById('twitter').value = profile.profile.twitter || '';
+            document.getElementById('instagram').value = profile.profile.instagram || '';
+            document.getElementById('linkedin').value = profile.profile.linkedin || '';
+        }
+
+        // Charger les statistiques
+        loadStats();
+    }
+
+    // Fonction pour charger les statistiques
+    async function loadStats() {
+        try {
+            const response = await fetch('/api/favorites/', {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+                }
+            });
+
+            if (response.ok) {
+                const favorites = await response.json();
+                document.getElementById('favorites-count').textContent = favorites.length || 0;
+            }
+        } catch (error) {
+            console.error('Erreur lors du chargement des statistiques:', error);
+        }
+    }
+
+    function showToast(message, type = 'info') {
+        const toast = document.getElementById('toast');
+        toast.textContent = message;
+        toast.className = `toast ${type === 'success' ? 'bg-green-500' : 'bg-red-500'}`;
+        toast.style.display = 'block';
+
+        setTimeout(() => {
+            toast.style.display = 'none';
+        }, 3000);
+    }
+});
+</script>
+{% endblock %}

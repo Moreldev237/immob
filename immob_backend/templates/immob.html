@@ -1,0 +1,579 @@
+
+{% extends 'base.html' %}
+
+{% block content %}
+    <!-- Section Hero avec Recherche Avancée -->
+    <section class="hero-section text-white py-20 md:py-32 relative">
+        <!-- Overlay gradient -->
+        <div class="absolute inset-0 bg-gradient-to-b from-black/50 to-transparent"></div>
+        
+        <div class="container mx-auto px-4 relative z-10">
+            <div class="text-center mb-8">
+                <h1 class="text-4xl md:text-6xl font-bold mb-4">Trouvez votre bien idéal</h1>
+                <p class="text-xl md:text-2xl text-gray-200 max-w-3xl mx-auto">
+                    Découvrez les meilleures propriétés au Cameroun et partout dans le monde
+                </p>
+            </div>
+            
+            <!-- Barre de recherche avancée (style Airbnb) -->
+            <div class="search-box-enhanced max-w-4xl mx-auto">
+                <div class="flex flex-col md:flex-row items-center">
+                    <div class="flex-1 w-full md:w-auto border-b md:border-b-0 md:border-r border-gray-200 p-2">
+                        <label class="block text-xs font-bold text-gray-700 mb-1">Emplacement</label>
+                        <input type="text" id="hero-location" placeholder="Ville, quartier..." class="w-full text-sm text-gray-800">
+                    </div>
+                    <div class="flex-1 w-full md:w-auto border-b md:border-b-0 md:border-r border-gray-200 p-2">
+                        <label class="block text-xs font-bold text-gray-700 mb-1">Type de bien</label>
+                        <select id="hero-type" class="w-full text-sm text-gray-800 bg-transparent">
+                            <option value="">Tous types</option>
+                            <option value="maison">Maison</option>
+                            <option value="appartement">Appartement</option>
+                            <option value="terrain">Terrain</option>
+                            <option value="bureau">Bureau</option>
+                            <option value="commerce">Commerce</option>
+                        </select>
+                    </div>
+                    <div class="flex-1 w-full md:w-auto border-b md:border-b-0 p-2">
+                        <label class="block text-xs font-bold text-gray-700 mb-1">Prix max</label>
+                        <select id="hero-price" class="w-full text-sm text-gray-800 bg-transparent">
+                            <option value="">Sans maximum</option>
+                            <option value="5000000">5M XAF</option>
+                            <option value="10000000">10M XAF</option>
+                            <option value="20000000">20M XAF</option>
+                            <option value="50000000">50M XAF</option>
+                            <option value="100000000">100M XAF</option>
+                        </select>
+                    </div>
+                    <button id="hero-search-btn" class="w-full md:w-auto bg-blue-600 text-white px-8 py-3 rounded-full font-bold hover:bg-blue-700 transition">
+                        <i class="fas fa-search mr-2"></i>Rechercher
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Quick Stats -->
+            <div class="flex justify-center space-x-8 md:space-x-16 mt-8 text-center">
+                <div>
+                    <div class="text-3xl font-bold" id="stat-properties">0</div>
+                    <div class="text-sm text-gray-300">Propriétés</div>
+                </div>
+                <div>
+                    <div class="text-3xl font-bold" id="stat-cities">0</div>
+                    <div class="text-sm text-gray-300">Villes</div>
+                </div>
+                <div>
+                    <div class="text-3xl font-bold" id="stat-users">0</div>
+                    <div class="text-sm text-gray-300">Utilisateurs</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Catégories rapides -->
+    <section class="py-8 bg-white shadow-sm">
+        <div class="container mx-auto px-4">
+            <div class="flex overflow-x-auto space-x-6 pb-4" id="categories-scroll">
+                <a href="#" class="category-item flex-shrink-0 text-center group" data-type="maison">
+                    <div class="w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center mb-2 group-hover:bg-blue-600 transition">
+                        <i class="fas fa-home text-blue-600 text-2xl group-hover:text-white"></i>
+                    </div>
+                    <span class="text-sm font-medium text-gray-700">Maisons</span>
+                </a>
+                <a href="#" class="category-item flex-shrink-0 text-center group" data-type="appartement">
+                    <div class="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mb-2 group-hover:bg-green-600 transition">
+                        <i class="fas fa-building text-green-600 text-2xl group-hover:text-white"></i>
+                    </div>
+                    <span class="text-sm font-medium text-gray-700">Appartements</span>
+                </a>
+                <a href="#" class="category-item flex-shrink-0 text-center group" data-type="terrain">
+                    <div class="w-16 h-16 rounded-full bg-yellow-100 flex items-center justify-center mb-2 group-hover:bg-yellow-600 transition">
+                        <i class="fas fa-map text-yellow-600 text-2xl group-hover:text-white"></i>
+                    </div>
+                    <span class="text-sm font-medium text-gray-700">Terrains</span>
+                </a>
+                <a href="#" class="category-item flex-shrink-0 text-center group" data-type="bureau">
+                    <div class="w-16 h-16 rounded-full bg-purple-100 flex items-center justify-center mb-2 group-hover:bg-purple-600 transition">
+                        <i class="fas fa-briefcase text-purple-600 text-2xl group-hover:text-white"></i>
+                    </div>
+                    <span class="text-sm font-medium text-gray-700">Bureaux</span>
+                </a>
+                <a href="#" class="category-item flex-shrink-0 text-center group" data-type="commerce">
+                    <div class="w-16 h-16 rounded-full bg-red-100 flex items-center justify-center mb-2 group-hover:bg-red-600 transition">
+                        <i class="fas fa-store text-red-600 text-2xl group-hover:text-white"></i>
+                    </div>
+                    <span class="text-sm font-medium text-gray-700">Commerces</span>
+                </a>
+                <a href="#" class="category-item flex-shrink-0 text-center group" data-type="villa">
+                    <div class="w-16 h-16 rounded-full bg-indigo-100 flex items-center justify-center mb-2 group-hover:bg-indigo-600 transition">
+                        <i class="fas fa-archway text-indigo-600 text-2xl group-hover:text-white"></i>
+                    </div>
+                    <span class="text-sm font-medium text-gray-700">Villas</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Propriétés en Vedette avec Map Toggle -->
+    <section class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center mb-8">
+                <div>
+                    <h2 class="text-3xl font-bold text-gray-900">Propriétés en Vedette</h2>
+                    <p class="text-gray-600 mt-1">Découvrez nos meilleures offres</p>
+                </div>
+                <div class="flex space-x-2">
+                    <button id="view-grid-btn" class="view-toggle-btn px-4 py-2 bg-blue-600 text-white rounded-lg" data-view="grid">
+                        <i class="fas fa-th-large"></i>
+                    </button>
+                    <button id="view-map-btn" class="view-toggle-btn px-4 py-2 bg-gray-200 text-gray-700 rounded-lg" data-view="map">
+                        <i class="fas fa-map"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Grid View -->
+            <div id="properties-grid-view" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="col-span-full text-center py-12">
+                    <i class="fas fa-spinner fa-spin text-4xl text-blue-600 mb-4"></i>
+                    <p class="text-gray-600">Chargement des propriétés...</p>
+                </div>
+            </div>
+
+            <!-- Map View -->
+            <div id="properties-map-view" class="hidden">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="lg:col-span-2">
+                        <div id="featured-map" class="h-[500px] rounded-lg shadow-lg"></div>
+                    </div>
+                    <div class="lg:col-span-1">
+                        <div id="map-properties-list" class="space-y-4 max-h-[500px] overflow-y-auto"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center mt-8">
+                <a href="{% url 'properties' %}" class="btn-primary py-3 px-10 inline-block">
+                    <i class="fas fa-list mr-2"></i>Voir toutes les propriétés
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Map des Localisations Populaires -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-4">Explorer par Localisation</h2>
+            <p class="text-gray-600 text-center mb-12 max-w-2xl mx-auto">
+                Trouvez des propriétés dans les quartiers les plus recherchés
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" id="locations-grid"></div>
+        </div>
+    </section>
+
+    <!-- Section Alertes de Recherche -->
+    <section class="py-16 bg-gradient-to-r from-blue-600 to-blue-800 text-white">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-3xl font-bold mb-4">Ne manquez aucune opportunité</h2>
+            <p class="text-xl mb-8 max-w-2xl mx-auto">
+                Créez une alerte de recherche et recevez les nouvelles propriétés directement dans votre boîte mail
+            </p>
+            
+            <form id="search-alert-form" class="max-w-lg mx-auto flex flex-col md:flex-row gap-4">
+                <input type="email" id="alert-email" placeholder="Votre adresse email" required
+                       class="flex-1 px-6 py-3 rounded-full text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <button type="submit" class="bg-white text-blue-600 px-8 py-3 rounded-full font-bold hover:bg-gray-100 transition">
+                    <i class="fas fa-bell mr-2"></i>Créer une alerte
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Section Avis et Notes -->
+    <section id="testimonials" class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-end mb-8">
+                <div>
+                    <h2 class="text-3xl font-bold text-gray-900">Ce que disent nos clients</h2>
+                    <p class="text-gray-600 mt-1">Découvrez les expériences de nos utilisateurs satisfaits</p>
+                </div>
+                <div class="flex items-center">
+                    <div class="text-right mr-4">
+                        <div class="text-4xl font-bold text-gray-900">4.8</div>
+                        <div class="flex text-yellow-400">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                        </div>
+                        <div class="text-sm text-gray-500">sur 5</div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="testimonials-container" class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="text-center py-12 col-span-full">
+                    <i class="fas fa-spinner fa-spin text-4xl text-blue-600 mb-4"></i>
+                    <p class="text-gray-600">Chargement des avis...</p>
+                </div>
+            </div>
+
+            <div class="mt-16 max-w-2xl mx-auto bg-white p-8 rounded-xl shadow-lg">
+                <h3 class="text-2xl font-bold mb-6">Partagez votre expérience</h3>
+                <form id="feedback-form">
+                    <div class="mb-6">
+                        <label class="block text-gray-700 mb-2">Notez notre service</label>
+                        <div class="flex space-x-2" id="rating-stars">
+                            <i class="far fa-star text-2xl text-yellow-400 rating-star cursor-pointer hover:scale-110 transition" data-value="1"></i>
+                            <i class="far fa-star text-2xl text-yellow-400 rating-star cursor-pointer hover:scale-110 transition" data-value="2"></i>
+                            <i class="far fa-star text-2xl text-yellow-400 rating-star cursor-pointer hover:scale-110 transition" data-value="3"></i>
+                            <i class="far fa-star text-2xl text-yellow-400 rating-star cursor-pointer hover:scale-110 transition" data-value="4"></i>
+                            <i class="far fa-star text-2xl text-yellow-400 rating-star cursor-pointer hover:scale-110 transition" data-value="5"></i>
+                        </div>
+                        <input type="hidden" id="rating-value" value="0">
+                    </div>
+
+                    <div class="mb-6">
+                        <label class="block text-gray-700 mb-2">Votre avis</label>
+                        <textarea id="feedback-text" rows="4" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none" placeholder="Partagez votre expérience avec IMMOB..."></textarea>
+                    </div>
+
+                    <button type="submit" class="btn-primary w-full py-3">
+                        <i class="fas fa-paper-plane mr-2"></i>Soumettre mon avis
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section À propos -->
+    <section id="about" class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h2 class="text-3xl font-bold mb-6">Pourquoi choisir IMMOB ?</h2>
+                    <p class="text-gray-700 mb-6">
+                        IMMOB est la plateforme immobilière leader au Cameroun, connectant acheteurs, vendeurs et locataires depuis 2020.
+                    </p>
+
+                    <div class="space-y-6">
+                        <div class="flex items-start">
+                            <div class="bg-blue-100 p-3 rounded-full mr-4">
+                                <i class="fas fa-shield-alt text-blue-600 text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-lg mb-1">Sécurité garantie</h4>
+                                <p class="text-gray-600">Toutes nos propriétés sont vérifiées et nos transactions sécurisées.</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start">
+                            <div class="bg-green-100 p-3 rounded-full mr-4">
+                                <i class="fas fa-map-marker-alt text-green-600 text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-lg mb-1">Couverture nationale</h4>
+                                <p class="text-gray-600">Nous couvrons toutes les régions du Cameroun.</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start">
+                            <div class="bg-purple-100 p-3 rounded-full mr-4">
+                                <i class="fas fa-headset text-purple-600 text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-lg mb-1">Support client 24/7</h4>
+                                <p class="text-gray-600">Notre équipe est disponible pour vous accompagner.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="relative">
+                    <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+                         alt="Équipe IMMOB" class="rounded-xl shadow-lg w-full">
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    loadFeaturedProperties();
+    loadLocations();
+    loadTestimonials();
+    loadStats();
+    initViewToggle();
+    initSearchHandlers();
+    initRatingStars();
+    initFeedbackForm();
+    initSearchAlertForm();
+    initCategoryHandlers();
+});
+
+async function loadFeaturedProperties() {
+    const container = document.getElementById('properties-grid-view');
+    try {
+        const response = await fetch('/api/properties/featured/');
+        const properties = await response.json();
+        
+        if (properties.length === 0) {
+            container.innerHTML = `
+                <div class="col-span-full text-center py-12">
+                    <i class="fas fa-home text-6xl text-gray-300 mb-4"></i>
+                    <p class="text-gray-600">Aucune propriété en vedette</p>
+                </div>`;
+            return;
+        }
+        
+        container.innerHTML = properties.map(createPropertyCard).join('');
+        window.featuredProperties = properties;
+        
+        if (document.getElementById('properties-map-view').classList.contains('hidden') === false) {
+            initFeaturedMap();
+        }
+    } catch (error) {
+        container.innerHTML = `<div class="col-span-full text-center py-12"><p class="text-red-600">Erreur de chargement</p></div>`;
+    }
+}
+
+function createPropertyCard(property, showOnMap = false) {
+    const imageUrl = property.images?.[0]?.image || 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=400';
+    const status = getPropertyStatus(property.status);
+    const price = formatPrice(property.price, property.currency);
+    
+    if (showOnMap) {
+        return `
+            <div class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition cursor-pointer map-property-item" data-id="${property.id}">
+                <div class="flex space-x-4">
+                    <img src="${imageUrl}" class="w-20 h-20 rounded-lg object-cover">
+                    <div class="flex-1">
+                        <h4 class="font-bold text-sm">${truncateText(property.title, 40)}</h4>
+                        <p class="text-xs text-gray-500">${property.location?.city || ''}</p>
+                        <p class="text-blue-600 font-bold">${price}</p>
+                    </div>
+                </div>
+            </div>`;
+    }
+    
+    return `
+        <div class="property-card bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 group">
+            <div class="relative">
+                <img src="${imageUrl}" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
+                <div class="property-card-overlay"></div>
+                <span class="absolute top-3 right-3 bg-${status.color}-600 text-white px-3 py-1 rounded-full font-bold text-xs">${status.text}</span>
+                <button class="favorite-btn absolute top-3 left-3 bg-white p-2 rounded-full text-gray-400 hover:text-red-500 transition" data-property-id="${property.id}">
+                    <i class="far fa-heart"></i>
+                </button>
+            </div>
+            <div class="p-4">
+                <h3 class="font-bold text-gray-900 mb-1">${truncateText(property.title, 50)}</h3>
+                <p class="text-sm text-gray-500 mb-2"><i class="fas fa-map-marker-alt mr-1"></i>${property.location?.city || ''}</p>
+                <div class="flex justify-between items-center">
+                    <div class="text-blue-600 font-bold text-lg">${price}</div>
+                    <div class="flex items-center space-x-3 text-gray-500 text-sm">
+                        ${property.bedrooms > 0 ? `<span><i class="fas fa-bed mr-1"></i>${property.bedrooms}</span>` : ''}
+                        ${property.bathrooms > 0 ? `<span><i class="fas fa-bath mr-1"></i>${property.bathrooms}</span>` : ''}
+                    </div>
+                </div>
+                <a href="/properties/${property.id}/" class="btn-primary w-full text-center mt-3 py-2 text-sm">
+                    <i class="fas fa-eye mr-1"></i>Voir les détails
+                </a>
+            </div>
+        </div>`;
+}
+
+function initViewToggle() {
+    const gridBtn = document.getElementById('view-grid-btn');
+    const mapBtn = document.getElementById('view-map-btn');
+    const gridView = document.getElementById('properties-grid-view');
+    const mapView = document.getElementById('properties-map-view');
+    
+    gridBtn?.addEventListener('click', function() {
+        gridView.classList.remove('hidden');
+        mapView.classList.add('hidden');
+        gridBtn.classList.add('bg-blue-600', 'text-white');
+        gridBtn.classList.remove('bg-gray-200', 'text-gray-700');
+        mapBtn?.classList.add('bg-gray-200', 'text-gray-700');
+        mapBtn?.classList.remove('bg-blue-600', 'text-white');
+    });
+    
+    mapBtn?.addEventListener('click', function() {
+        gridView.classList.add('hidden');
+        mapView.classList.remove('hidden');
+        mapBtn.classList.add('bg-blue-600', 'text-white');
+        mapBtn.classList.remove('bg-gray-200', 'text-gray-700');
+        gridBtn.classList.add('bg-gray-200', 'text-gray-700');
+        gridBtn.classList.remove('bg-blue-600', 'text-white');
+        if (!window.featuredMap) initFeaturedMap();
+    });
+}
+
+function initFeaturedMap() {
+    const mapContainer = document.getElementById('featured-map');
+    if (!mapContainer) return;
+    
+    window.featuredMap = L.map(mapContainer).setView([3.848, 11.502], 6);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors'
+    }).addTo(window.featuredMap);
+    
+    const properties = window.featuredProperties || [];
+    const listContainer = document.getElementById('map-properties-list');
+    listContainer.innerHTML = properties.map(p => createPropertyCard(p, true)).join('');
+    
+    properties.forEach(property => {
+        if (property.location?.latitude && property.location?.longitude) {
+            const marker = L.marker([property.location.latitude, property.location.longitude]).addTo(window.featuredMap);
+            marker.bindPopup(`<div class="w-48"><h4 class="font-bold">${property.title}</h4><p class="text-blue-600 font-bold">${formatPrice(property.price, property.currency)}</p></div>`);
+        }
+    });
+}
+
+function loadLocations() {
+    const container = document.getElementById('locations-grid');
+    const locations = [
+        { name: 'Yaoundé', quarter: 'Bastos', image: 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=400', count: 156 },
+        { name: 'Douala', quarter: 'Bonapriso', image: 'https://images.unsplash.com/photo-1574362848149-11496d93a7c7?w=400', count: 203 },
+        { name: 'Bafoussam', quarter: 'Centre', image: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=400', count: 87 },
+        { name: 'Garoua', quarter: 'Nord', image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=400', count: 64 },
+    ];
+    
+    container.innerHTML = locations.map(loc => `
+        <a href="/properties/?search=${encodeURIComponent(loc.name)}" class="location-card group">
+            <div class="relative h-64 rounded-xl overflow-hidden">
+                <img src="${loc.image}" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
+                <div class="absolute bottom-0 left-0 right-0 p-4 text-white">
+                    <h3 class="text-xl font-bold">${loc.name}</h3>
+                    <p class="text-sm text-gray-300">${loc.quarter}</p>
+                    <p class="text-sm mt-2"><i class="fas fa-home mr-1"></i>${loc.count} propriétés</p>
+                </div>
+            </div>
+        </a>`).join('');
+}
+
+function loadTestimonials() {
+    const container = document.getElementById('testimonials-container');
+    const demoReviews = [
+        { user: { first_name: 'Marie', last_name: 'Dubois' }, rating: 5, comment: 'Excellent service ! J\'ai trouvé mon appartement idéal en seulement une semaine.', created_at: '2024-01-15' },
+        { user: { first_name: 'Jean', last_name: 'Mouelle' }, rating: 5, comment: 'Plateforme très intuitive. Les filtres de recherche m\'ont permis de trouver rapidement ce que je cherchais.', created_at: '2024-01-10' },
+        { user: { first_name: 'Sophie', last_name: 'Nkomo' }, rating: 4, comment: 'Très bonne expérience globale. Service client réactif et professionnel.', created_at: '2024-01-05' },
+    ];
+    
+    container.innerHTML = demoReviews.map(review => `
+        <div class="bg-white p-6 rounded-xl shadow-lg">
+            <div class="flex items-center mb-4">
+                <div class="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center mr-3">
+                    <span class="font-bold text-blue-600">${review.user.first_name[0]}${review.user.last_name[0]}</span>
+                </div>
+                <div>
+                    <div class="font-bold">${review.user.first_name} ${review.user.last_name}</div>
+                    <div class="flex text-yellow-400 text-sm">
+                        ${'<i class="fas fa-star"></i>'.repeat(review.rating)}
+                        ${'<i class="far fa-star"></i>'.repeat(5 - review.rating)}
+                    </div>
+                </div>
+            </div>
+            <p class="text-gray-600">${review.comment}</p>
+            <p class="text-sm text-gray-400 mt-4">${new Date(review.created_at).toLocaleDateString('fr-FR')}</p>
+        </div>`).join('');
+}
+
+async function loadStats() {
+    try {
+        const response = await fetch('/api/properties/stats/');
+        const stats = await response.json();
+        document.getElementById('stat-properties').textContent = stats.total_properties || 0;
+        document.getElementById('stat-cities').textContent = '10+';
+        document.getElementById('stat-users').textContent = '500+';
+    } catch (error) {
+        document.getElementById('stat-properties').textContent = '0';
+        document.getElementById('stat-cities').textContent = '10+';
+        document.getElementById('stat-users').textContent = '500+';
+    }
+}
+
+function initSearchHandlers() {
+    document.getElementById('hero-search-btn')?.addEventListener('click', function() {
+        const location = document.getElementById('hero-location').value;
+        const type = document.getElementById('hero-type').value;
+        const price = document.getElementById('hero-price').value;
+        
+        let url = '/properties/?';
+        if (location) url += `search=${encodeURIComponent(location)}&`;
+        if (type) url += `property_type=${type}&`;
+        if (price) url += `max_price=${price}&`;
+        
+        window.location.href = url.slice(0, -1);
+    });
+}
+
+function initRatingStars() {
+    const stars = document.querySelectorAll('#rating-stars .rating-star');
+    const input = document.getElementById('rating-value');
+    
+    stars.forEach(star => {
+        star.addEventListener('click', function() {
+            const value = parseInt(this.dataset.value);
+            input.value = value;
+            stars.forEach((s, i) => {
+                s.classList.toggle('fas', i < value);
+                s.classList.toggle('far', i >= value);
+            });
+        });
+    });
+}
+
+function initFeedbackForm() {
+    document.getElementById('feedback-form')?.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const rating = document.getElementById('rating-value').value;
+        const comment = document.getElementById('feedback-text').value;
+        
+        try {
+            const response = await fetch('/api/feedback/', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ feedback_type: 'praise', rating, message: comment })
+            });
+            
+            if (response.ok) {
+                showToast('Merci pour votre avis !', 'success');
+                this.reset();
+                document.getElementById('rating-value').value = 0;
+                document.querySelectorAll('#rating-stars .rating-star').forEach(s => {
+                    s.classList.remove('fas');
+                    s.classList.add('far');
+                });
+            }
+        } catch (error) {
+            showToast('Erreur lors de l\'envoi', 'error');
+        }
+    });
+}
+
+function initSearchAlertForm() {
+    document.getElementById('search-alert-form')?.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const email = document.getElementById('alert-email').value;
+        
+        showToast('Alerte créée avec succès !', 'success');
+        this.reset();
+    });
+}
+
+function initCategoryHandlers() {
+    document.querySelectorAll('.category-item').forEach(item => {
+        item.addEventListener('click', function(e) {
+            e.preventDefault();
+            const type = this.dataset.type;
+            window.location.href = `/properties/?property_type=${type}`;
+        });
+    });
+}
+</script>
+{% endblock %}
+

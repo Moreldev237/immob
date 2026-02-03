@@ -1,0 +1,236 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Inscription - IMMOB{% endblock %}
+
+{% block content %}
+<div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-md w-full space-y-8">
+        <div>
+            <div class="flex justify-center">
+                <div class="flex items-center space-x-2">
+                    <i class="fas fa-home text-4xl text-blue-600"></i>
+                    <h1 class="text-3xl font-bold text-gray-900">IMMOB</h1>
+                </div>
+            </div>
+            <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
+                Créer votre compte IMMOB
+            </h2>
+            <p class="mt-2 text-center text-sm text-gray-600">
+                Ou
+                <a href="{% url 'login' %}" class="font-medium text-blue-600 hover:text-blue-500">
+                    connectez-vous à votre compte existant
+                </a>
+            </p>
+        </div>
+
+        <!-- Toast Notification -->
+        <div id="toast" class="toast fixed top-4 right-4 z-50"></div>
+
+        <form id="register-form" class="mt-8 space-y-6">
+            <div class="rounded-md shadow-sm space-y-4">
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label for="first_name" class="block text-sm font-medium text-gray-700">Prénom</label>
+                        <input id="first_name" name="first_name" type="text" required
+                               class="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                               placeholder="Votre prénom">
+                    </div>
+                    <div>
+                        <label for="last_name" class="block text-sm font-medium text-gray-700">Nom</label>
+                        <input id="last_name" name="last_name" type="text" required
+                               class="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                               placeholder="Votre nom">
+                    </div>
+                </div>
+
+                <div>
+                    <label for="email" class="block text-sm font-medium text-gray-700">Adresse email</label>
+                    <input id="email" name="email" type="email" autocomplete="email" required
+                           class="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                           placeholder="votre@email.com">
+                </div>
+
+                <div>
+                    <label for="phone_number" class="block text-sm font-medium text-gray-700">Numéro de téléphone (optionnel)</label>
+                    <input id="phone_number" name="phone_number" type="tel"
+                           class="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                           placeholder="+237XXXXXXXXX">
+                </div>
+
+                <div>
+                    <label for="password" class="block text-sm font-medium text-gray-700">Mot de passe</label>
+                    <input id="password" name="password" type="password" required
+                           class="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                           placeholder="Créez un mot de passe sécurisé">
+                    <p class="mt-1 text-xs text-gray-500">Minimum 8 caractères avec chiffres et lettres</p>
+                </div>
+
+                <div>
+                    <label for="password_confirm" class="block text-sm font-medium text-gray-700">Confirmer le mot de passe</label>
+                    <input id="password_confirm" name="password_confirm" type="password" required
+                           class="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                           placeholder="Répétez votre mot de passe">
+                </div>
+
+                <div class="flex items-center">
+                    <input id="is_agent" name="is_agent" type="checkbox"
+                           class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                    <label for="is_agent" class="ml-2 block text-sm text-gray-900">
+                        Je suis un agent immobilier
+                    </label>
+                </div>
+
+                <div id="agent-fields" class="hidden space-y-4">
+                    <div>
+                        <label for="agency_name" class="block text-sm font-medium text-gray-700">Nom de l'agence</label>
+                        <input id="agency_name" name="agency_name" type="text"
+                               class="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                               placeholder="Nom de votre agence">
+                    </div>
+                    <div>
+                        <label for="license_number" class="block text-sm font-medium text-gray-700">Numéro de licence</label>
+                        <input id="license_number" name="license_number" type="text"
+                               class="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                               placeholder="Votre numéro de licence">
+                    </div>
+                </div>
+
+                <div class="flex items-center">
+                    <input id="accept_terms" name="accept_terms" type="checkbox" required
+                           class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                    <label for="accept_terms" class="ml-2 block text-sm text-gray-900">
+                        J'accepte les
+                        <a href="#" class="text-blue-600 hover:underline">conditions d'utilisation</a>
+                        et la
+                        <a href="#" class="text-blue-600 hover:underline">politique de confidentialité</a>
+                    </label>
+                </div>
+            </div>
+
+            <div>
+                <button type="submit" id="register-btn"
+                        class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                    <span class="absolute left-0 inset-y-0 flex items-center pl-3">
+                        <i class="fas fa-user-plus text-blue-500 group-hover:text-blue-400"></i>
+                    </span>
+                    Créer mon compte
+                </button>
+            </div>
+
+            <div class="text-center">
+                <p class="text-sm text-gray-600">
+                    Vous avez déjà un compte ?
+                    <a href="{% url 'login' %}" class="font-medium text-blue-600 hover:text-blue-500">
+                        Se connecter
+                    </a>
+                </p>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const registerForm = document.getElementById('register-form');
+    const registerBtn = document.getElementById('register-btn');
+    const isAgentCheckbox = document.getElementById('is_agent');
+    const agentFields = document.getElementById('agent-fields');
+
+    // Gestionnaire checkbox agent
+    isAgentCheckbox.addEventListener('change', function() {
+        if (this.checked) {
+            agentFields.classList.remove('hidden');
+        } else {
+            agentFields.classList.add('hidden');
+        }
+    });
+
+    // Gestionnaire d'inscription
+    registerForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        const formData = {
+            username: document.getElementById('email').value, // Utiliser l'email comme username
+            email: document.getElementById('email').value,
+            first_name: document.getElementById('first_name').value,
+            last_name: document.getElementById('last_name').value,
+            phone_number: document.getElementById('phone_number').value,
+            password: document.getElementById('password').value,
+            is_agent: document.getElementById('is_agent').checked,
+        };
+
+        // Ajouter les champs agent si nécessaire
+        if (formData.is_agent) {
+            formData.agency_name = document.getElementById('agency_name').value;
+            formData.license_number = document.getElementById('license_number').value;
+        }
+
+        // Validation côté client
+        if (document.getElementById('password').value !== document.getElementById('password_confirm').value) {
+            showToast('Les mots de passe ne correspondent pas', 'error');
+            return;
+        }
+
+        if (document.getElementById('password').value.length < 8) {
+            showToast('Le mot de passe doit contenir au moins 8 caractères', 'error');
+            return;
+        }
+
+        // Add password2 field to match serializer expectation
+        formData.password2 = document.getElementById('password_confirm').value;
+
+        registerBtn.disabled = true;
+        registerBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Création du compte...';
+
+        try {
+            const response = await fetch('/api/users/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                showToast('Compte créé avec succès ! Redirection vers la connexion...', 'success');
+                setTimeout(() => {
+                    window.location.href = '{% url "login" %}';
+                }, 2000);
+            } else {
+                // Afficher les erreurs de validation
+                let errorMessage = 'Erreur lors de la création du compte';
+                if (data.email) {
+                    errorMessage = data.email[0];
+                } else if (data.username) {
+                    errorMessage = data.username[0];
+                } else if (data.detail) {
+                    errorMessage = data.detail;
+                }
+                showToast(errorMessage, 'error');
+            }
+        } catch (error) {
+            showToast('Erreur de réseau', 'error');
+        } finally {
+            registerBtn.disabled = false;
+            registerBtn.innerHTML = 'Créer mon compte';
+        }
+    });
+
+    function showToast(message, type = 'info') {
+        const toast = document.getElementById('toast');
+        toast.textContent = message;
+        toast.className = `toast ${type === 'success' ? 'bg-green-500' : 'bg-red-500'}`;
+        toast.style.display = 'block';
+
+        setTimeout(() => {
+            toast.style.display = 'none';
+        }, 3000);
+    }
+});
+</script>
+{% endblock %}
